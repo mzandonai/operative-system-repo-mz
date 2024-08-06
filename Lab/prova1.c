@@ -67,5 +67,24 @@ int main(int argc, int *argv[])
         printf("MY_VAR non esiste più \n");
     }
 
+    /*
+
+        Process Attributes
+
+    */
+
+    char buf[PATH_MAX];
+    int fd = open(".", O_RDONLY);
+    getcwd(buf, PATH_MAX);
+    printf("1) Current dir: \n\t%s\n", buf);
+
+    chdir("/tmp");
+    getcwd(buf, PATH_MAX);
+    printf("2) Current dir: \n\t%s\n", buf);
+
+    fchdir(fd);
+    getcwd(buf, PATH_MAX);
+    printf("3) Current dir: \n\t%s\n", buf);
+
     return 0;
 }
