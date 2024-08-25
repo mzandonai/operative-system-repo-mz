@@ -1,0 +1,10 @@
+PROVA DIOMERDA CANEtotal 36
+drwxr-xr-x 2 noname noname 4096 Mai  8 21:53 Desktop
+drwxr-xr-x 3 noname noname 4096 Mai 13 15:21 Documents
+drwxr-xr-x 2 noname noname 4096 Aug 22 17:16 Downloads
+drwxr-xr-x 2 noname noname 4096 Mai  8 21:53 Music
+drwxr-xr-x 2 noname noname 4096 Mai  8 21:53 Pictures
+drwxr-xr-x 2 noname noname 4096 Mai  8 21:53 Public
+drwx------ 4 noname noname 4096 Mai 15 18:17 snap
+drwxr-xr-x 2 noname noname 4096 Mai  8 21:54 Templates
+drwxr-xr-x 2 noname noname 4096 Mai  8 21:53 Videos
