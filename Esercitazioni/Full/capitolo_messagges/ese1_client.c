@@ -25,8 +25,13 @@ int main()
     }
 
     struct order new_order;
-    new_order.mtype = 1; // Imposta un tipo di messaggio arbitrario
-    
+
+    int prime = 2;
+    int normale = 1;
+
+    printf("Inserisci il tipo di cliente: ");
+    scanf("%ld", &new_order.mtype);
+    getchar();
 
     // Raccoglie i dati dall'utente
     printf("Inserisci il codice dell'ordine: ");
@@ -46,7 +51,7 @@ int main()
     new_order.email[strcspn(new_order.email, "\n")] = '\0'; // Rimuove newline
 
     // Invia il messaggio al server
-    if (msgsnd(msgid, &new_order, sizeof(new_order) - sizeof(long), 0) == -1)
+    if (msgsnd(msgid, &new_order, sizeof(new_order), 0) == -1)
     {
         perror("Errore nell'invio del messaggio");
         exit(1);
