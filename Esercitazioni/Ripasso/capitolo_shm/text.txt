@@ -1,1 +1,0 @@
-ciao questo è il testo nel file del path!

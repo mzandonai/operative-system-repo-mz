@@ -1,2 +1,0 @@
-Il processo figlio (generato dalla fork()) agisce come il Produttore. Questo processo apre il file specificato come argomento, legge il contenuto del file in blocchi di massimo 100 caratteri e invia ogni blocco al Consumatore attraverso la PIPE.
-Dopo aver inviato tutti i dati, il Produttore chiude il lato di scrittura della PIPE e termina.
