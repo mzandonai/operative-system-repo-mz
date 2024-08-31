@@ -23,6 +23,7 @@
 #define WIN
 #define PID_CLIENT1
 #define PID_CLIENT2
+
 // Variabili globali
 int sem_id;
 int shm_id;
@@ -39,7 +40,6 @@ bool sono_CPU = false;
 struct sembuf sb = {0, 0, 0};
 
 // Funzioni
-
 void cleanup_client()
 {
     if (shmdt(shared_memory) {

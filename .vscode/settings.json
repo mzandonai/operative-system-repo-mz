@@ -3,7 +3,9 @@
         "time.h": "c",
         "types.h": "c",
         "sem.h": "c",
-        "stat.h": "c"
+        "stat.h": "c",
+        "stdio.h": "c",
+        "pthread.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
