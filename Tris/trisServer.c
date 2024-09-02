@@ -79,26 +79,44 @@ void controlli_iniziali(int argc, char *argv[])
     // controllo correttezza simboli
 
     // se viene inserito 0 non c'è timeout
+    if (argc < 4)
+    {
+        printf("Uso: %s <timeout> <simbolo1> <simbolo2>\n", argv[0]);
+        exit(1);
+    }
+    timeout = atoi(argv[1]);
+    if (timeout <= 0)
+    {
+        timeout = TIMEOUT; // Imposta il timeout di default
+    }
 }
 
 // funzione per stabilire se c'è un vincitore
 bool vincitore(char *matrix, char player)
 {
-
-    // controllo orizzontale
-    for (int i = 0; i < count; i++)
+    // Controllo orizzontale
+    for (int i = 0; i < ROWS; i++)
     {
-        /* code */
+        if (matrix[i * COLS] == player && matrix[i * COLS + 1] == player && matrix[i * COLS + 2] == player)
+        {
+            return true;
+        }
     }
-    
-    // controllo verticale
-    for (int i = 0; i < count; i++)
+    // Controllo verticale
+    for (int i = 0; i < COLS; i++)
     {
-        /* code */
+        if (matrix[i] == player && matrix[i + COLS] == player && matrix[i + 2 * COLS] == player)
+        {
+            return true;
+        }
     }
-    
-    // controllo diagonale
-    if()
+    // Controllo diagonale
+    if ((matrix[0] == player && matrix[4] == player && matrix[8] == player) ||
+        (matrix[2] == player && matrix[4] == player && matrix[6] == player))
+    {
+        return true;
+    }
+    return false;
 }
 
 bool pareggio(char *matrix)
@@ -106,6 +124,14 @@ bool pareggio(char *matrix)
     // Conta il numero di celle occupate
 
     // Se tutte le celle sono occupate e nessuno ha vinto, c'è pareggio
+    for (int i = 0; i < ROWS * COLS; i++)
+    {
+        if (matrix[i] == 0)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 int main(int argc, char *argv[])
@@ -162,7 +188,36 @@ int main(int argc, char *argv[])
     // il server attende fin quando la partita non si conclude con una vittoria o con un pareggio
     while (1)
     {
-        ...
+        // Attendi che il semaforo venga incrementato dal client
+        sb.sem_op = -1;
+        semop(semid, &sb, 1);
+
+        if (shared_memory[END] != 0)
+        {
+            break; // Se il gioco è terminato
+        }
+
+        if (vincitore(matrix, shared_memory[1]))
+        {
+            printf("Giocatore 1 ha vinto!\n");
+            shared_memory[END] = WIN;
+            break;
+        }
+        else if (vincitore(matrix, shared_memory[2]))
+        {
+            printf("Giocatore 2 ha vinto!\n");
+            shared_memory[END] = WIN;
+            break;
+        }
+        else if (pareggio(matrix))
+        {
+            printf("Pareggio!\n");
+            shared_memory[END] = 1;
+            break;
+        }
+
+        // Alternare il turno tra i giocatori
+        shared_memory[3] = 1 - shared_memory[3];
     }
 
     cleanup();

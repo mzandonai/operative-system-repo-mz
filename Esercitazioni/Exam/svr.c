@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
                 return 1;
             }
             else if (pid == 0)
-            {
+            {fd1
                 char arg[5];
                 sprintf(arg, "%d", i);
                 execl("./cli2", "./cli2", arg, NULL);
