@@ -9,18 +9,17 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
-
 // costanti da inizializzare
-#define TIMEOUT 10
-#define KEY_SHM 1234
-#define KEY_SEM 5678
+#define TIMEOUT
+#define KEY_SHM
+#define KEY_SEM
+#define SIZE
 #define ROWS 3
 #define COLS 3
-#define SIZE sizeof(int) * (6 + ROWS * COLS)
-#define END 0
-#define WIN 1
-#define PID_CLIENT1 2
-#define PID_CLIENT2 3
+#define END
+#define WIN
+#define PID_CLIENT1
+#define PID_CLIENT2
 
 // variabili globali
 int timeout;
@@ -38,22 +37,22 @@ struct sembuf sop = {0, 0, 0};
 void cleanup()
 {
     // Deallocazione memoria condivisa
-    if (shmdt(shared_memory) == -1)
+    if shmdt (shared_memory)
     {
-        perror("Errore durante la deallocazione");
+        ...
     }
     // Rimuove area di memoria condivisa
     //(id memoria, flag per rimozione, opzioni)
-    if (shmctl(shmid, IPC_RMID, NULL) == -1)
+    if shmctl (shmid, IPC_RMID, NULL)
     {
-        perror("Errore durante la rimozione");
+        ...
     }
 
     // Deallocazione semaforo
     //(id semaforo, numero del semaforo su cui eseguire l'operazione, flag per rimozione)
-    if (semctl(semid, 0, IPC_RMID) == -1)
+    ifsemctl(semid, 0, IPC_RMID)
     {
-        perror("Errore durante la rimozione del semaforo");
+        ...
     }
 }
 
@@ -63,11 +62,9 @@ void gestore_segnale(int segnale)
 }
 
 // Chiude i progessi figli quando sono diversi da 0
-void sigHandler(int signum)
+void sigHandler()
 {
-    printf("Ricevuto segnale di interrupt\n");
-    cleanup();
-    exit(0);
+    ...
 }
 
 void controlli_iniziali(int argc, char *argv[])
@@ -79,44 +76,17 @@ void controlli_iniziali(int argc, char *argv[])
     // controllo correttezza simboli
 
     // se viene inserito 0 non c'è timeout
-    if (argc < 4)
-    {
-        printf("Uso: %s <timeout> <simbolo1> <simbolo2>\n", argv[0]);
-        exit(1);
-    }
-    timeout = atoi(argv[1]);
-    if (timeout <= 0)
-    {
-        timeout = TIMEOUT; // Imposta il timeout di default
-    }
 }
 
 // funzione per stabilire se c'è un vincitore
 bool vincitore(char *matrix, char player)
 {
-    // Controllo orizzontale
-    for (int i = 0; i < ROWS; i++)
-    {
-        if (matrix[i * COLS] == player && matrix[i * COLS + 1] == player && matrix[i * COLS + 2] == player)
-        {
-            return true;
-        }
-    }
-    // Controllo verticale
-    for (int i = 0; i < COLS; i++)
-    {
-        if (matrix[i] == player && matrix[i + COLS] == player && matrix[i + 2 * COLS] == player)
-        {
-            return true;
-        }
-    }
-    // Controllo diagonale
-    if ((matrix[0] == player && matrix[4] == player && matrix[8] == player) ||
-        (matrix[2] == player && matrix[4] == player && matrix[6] == player))
-    {
-        return true;
-    }
-    return false;
+
+    // controllo orizzontale
+
+    // controllo verticale
+
+    // controllo diagonale
 }
 
 bool pareggio(char *matrix)
@@ -124,14 +94,6 @@ bool pareggio(char *matrix)
     // Conta il numero di celle occupate
 
     // Se tutte le celle sono occupate e nessuno ha vinto, c'è pareggio
-    for (int i = 0; i < ROWS * COLS; i++)
-    {
-        if (matrix[i] == 0)
-        {
-            return false;
-        }
-    }
-    return true;
 }
 
 int main(int argc, char *argv[])
@@ -188,36 +150,7 @@ int main(int argc, char *argv[])
     // il server attende fin quando la partita non si conclude con una vittoria o con un pareggio
     while (1)
     {
-        // Attendi che il semaforo venga incrementato dal client
-        sb.sem_op = -1;
-        semop(semid, &sb, 1);
-
-        if (shared_memory[END] != 0)
-        {
-            break; // Se il gioco è terminato
-        }
-
-        if (vincitore(matrix, shared_memory[1]))
-        {
-            printf("Giocatore 1 ha vinto!\n");
-            shared_memory[END] = WIN;
-            break;
-        }
-        else if (vincitore(matrix, shared_memory[2]))
-        {
-            printf("Giocatore 2 ha vinto!\n");
-            shared_memory[END] = WIN;
-            break;
-        }
-        else if (pareggio(matrix))
-        {
-            printf("Pareggio!\n");
-            shared_memory[END] = 1;
-            break;
-        }
-
-        // Alternare il turno tra i giocatori
-        shared_memory[3] = 1 - shared_memory[3];
+        ...
     }
 
     cleanup();
